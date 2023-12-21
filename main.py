@@ -83,7 +83,6 @@ def LoadTextFile():
         text.setHtml(istream.readAll())
         f.close()
 
-
 app = QApplication(sys.argv)
 win = QWidget()
 win.resize(975, 500)
@@ -191,3 +190,107 @@ FontMenu.addAction(JustifyAlignMenu)
 
 layout.addWidget(MenuBar)
 #menu bar end
+
+toolbar = QToolBar()
+win.setLayout(layout)
+win.setWindowTitle("Rich text edit")
+
+layout.addWidget(toolbar)
+NewAction = QAction(QIcon("icons/new.png"), "Новый")
+NewAction.triggered.connect(new)
+toolbar.addAction(NewAction)
+
+SaveAction = QAction(QIcon("icons/save.png"), "Сохранить")
+SaveAction.triggered.connect(SaveTextFile)
+toolbar.addAction(SaveAction)
+
+LoadAction = QAction(QIcon("icons/open.png"), "Открыть")
+LoadAction.triggered.connect(LoadTextFile)
+toolbar.addAction(LoadAction)
+
+toolbar.addSeparator()
+
+UndoAction = QAction(QIcon("icons/undo.png"), "Отменить")
+UndoAction.triggered.connect(text.undo)
+toolbar.addAction(UndoAction)
+
+RedoAction = QAction(QIcon("icons/redo.png"), "Возвращать")
+RedoAction.triggered.connect(text.redo)
+toolbar.addAction(RedoAction)
+
+CopyAction = QAction(QIcon("icons/copy.png"), "Копировать")
+CopyAction.triggered.connect(text.copy)
+toolbar.addAction(CopyAction)
+
+CutAction = QAction(QIcon("icons/cut.png"), "Вырезать")
+CutAction.triggered.connect(text.cut)
+toolbar.addAction(CutAction)
+
+PasteAction = QAction(QIcon("icons/paste.png"), "Вставить")
+PasteAction.triggered.connect(text.paste)
+toolbar.addAction(PasteAction)
+
+toolbar.addSeparator()
+
+BoldAction = QAction(QIcon("icons/bold.png"), "Жирный")
+BoldAction.triggered.connect(bold)
+toolbar.addAction(BoldAction)
+
+ItalicAction = QAction(QIcon("icons/italic.png"), "Курсив")
+ItalicAction.triggered.connect(italic)
+toolbar.addAction(ItalicAction)
+
+UnderlineAction = QAction(QIcon("icons/underline.png"), "Подчеркнутый")
+UnderlineAction.triggered.connect(underline)
+toolbar.addAction(UnderlineAction)
+
+StrikeAction = QAction(QIcon("icons/strike.png"), "Зачеркнутый")
+StrikeAction.triggered.connect(strike)
+toolbar.addAction(StrikeAction)
+
+ColorAction = QAction(QIcon("icons/font-color.png"), "Цвет текста")
+ColorAction.triggered.connect(color)
+toolbar.addAction(ColorAction)
+
+HighlightAction = QAction(QIcon("icons/highlight.png"), "Выделение")
+HighlightAction.triggered.connect(highlight)
+toolbar.addAction(HighlightAction)
+
+toolbar.addSeparator()
+
+SizeLabel = QLabel("Размер:")
+toolbar.addWidget(SizeLabel)
+
+fontSize = QSpinBox()
+fontSize.valueChanged.connect(SetFontSize)
+toolbar.addWidget(fontSize)
+
+FontLabel = QLabel("Шрифт:")
+toolbar.addWidget(FontLabel)
+
+fontName = QComboBox()
+fontName.addItems(["Courier Std", "Hellentic Typewriter Regular", "Helvetica", "Arial", "SansSerif", "Helvetica", "Times", "Monospace"])
+fontName.activated.connect(SetFontName)
+toolbar.addWidget(fontName)
+
+toolbar.addSeparator()
+
+AlignLeftAction = QAction(QIcon("icons/align-left.png"), "Выравнивание по левому краю")
+AlignLeftAction.triggered.connect(lambda : text.setAlignment(Qt.AlignLeft))
+toolbar.addAction(AlignLeftAction)
+
+AlignCenterAction = QAction(QIcon("icons/align-center.png"), "Вырванивание посередине")
+AlignCenterAction.triggered.connect(lambda : text.setAlignment(Qt.AlignCenter))
+toolbar.addAction(AlignCenterAction)
+
+AlignRightAction = QAction(QIcon("icons/align-right.png"), "Выравнивание по правому краю")
+AlignRightAction.triggered.connect(lambda : text.setAlignment(Qt.AlignRight))
+toolbar.addAction(AlignRightAction)
+
+AlignJustifyAction = QAction(QIcon("icons/align-justify.png"), "Выравнивание по ширине")
+AlignJustifyAction.triggered.connect(lambda : text.setAlignment(Qt.AlignJustify))
+toolbar.addAction(AlignJustifyAction)
+
+layout.addWidget(text)
+win.show()
+sys.exit(app.exec_())
